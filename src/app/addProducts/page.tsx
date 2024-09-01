@@ -30,28 +30,32 @@ export default function AddProductForm() {
     const id = generateUniqueId();
 
     try {
-      const newProduct: ProductInterface = {
-        id,
-        name,
-        description,
-        price,
-        stock,
-        image: imageUrl,
-      };
+      if (typeof window !== "undefined") {
+        const newProduct: ProductInterface = {
+          id,
+          name,
+          description,
+          price,
+          stock,
+          image: imageUrl,
+        };
 
-      const products = loadProducts();
-      products.push(newProduct);
-      saveProducts(products);
+        const products = loadProducts();
+        products.push(newProduct);
+        saveProducts(products);
 
-      alert("Product added successfully!");
+        alert("Product added successfully!");
 
-      setName("");
-      setDescription("");
-      setPrice(0);
-      setStock(0);
-      setImageUrl(null);
+        setName("");
+        setDescription("");
+        setPrice(0);
+        setStock(0);
+        setImageUrl(null);
 
-      router.push("/");
+        router.push("/");
+      } else {
+        console.error("localStorage is not available on the server side.");
+      }
     } catch (error) {
       console.error("Error saving product:", error);
       alert("Error saving product");

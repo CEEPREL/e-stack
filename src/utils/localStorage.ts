@@ -1,17 +1,31 @@
 import { ProductInterface } from "../../types";
-import initialProducts from "../data/products.json";
+import initialProducts from "../../public/data/products.json";
 
-// utils/localStorage.ts
+const isBrowser = typeof window !== "undefined";
+
 export const loadProducts = (): ProductInterface[] => {
-  if (typeof window !== "undefined") {
-    const products = localStorage.getItem("products");
-    return products ? JSON.parse(products) : [];
+  if (isBrowser) {
+    let products = localStorage.getItem("products");
+
+    if (!products || products === "[]") {
+      console.log("Products not found in localStorage...");
+      products = JSON.stringify(initialProducts);
+      localStorage.setItem("products", products);
+    }
+
+    const parsedProducts = JSON.parse(products) as ProductInterface[];
+    console.log("Parsed Products:", parsedProducts);
+
+    return parsedProducts;
+  } else {
+    return initialProducts;
   }
-  return [];
 };
 
 export const saveProducts = (products: ProductInterface[]) => {
-  if (typeof window !== "undefined") {
+  if (isBrowser) {
     localStorage.setItem("products", JSON.stringify(products));
+  } else {
+    console.error("localStorage is not available on the server side.");
   }
 };
