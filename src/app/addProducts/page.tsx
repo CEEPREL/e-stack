@@ -4,6 +4,7 @@ import { saveProducts, loadProducts } from "@/utils/localStorage";
 import { ProductInterface } from "../../../types";
 import { UploadButton } from "@/utils/uploadthing";
 import { useRouter } from "next/navigation";
+import { Spinner } from "../components/spinner/spinner";
 
 export default function AddProductForm() {
   const [name, setName] = useState("");
@@ -109,23 +110,30 @@ export default function AddProductForm() {
       />
 
       <label className="font-semibold">Product Image</label>
-      <div onClick={() => setIsUploading(true)}>
-        <UploadButton
-          endpoint="imageUploader"
-          onClientUploadComplete={(res) => {
-            if (res && res.length > 0) {
-              const uploadedImage = res[0];
-              setImageUrl(uploadedImage.url);
-            }
-            alert("Upload Completed");
-            setIsUploading(false);
-          }}
-          onUploadError={(error: Error) => {
-            alert(`ERROR! ${error.message}`);
-            setIsUploading(false);
-          }}
-          className="border border-gray-300 rounded-md p-2 focus:outline-none focus:border-gray-500 hover:border-gray-400 transition"
-        />
+      <div className="relative">
+        <div onClick={() => setIsUploading(true)}>
+          <UploadButton
+            endpoint="imageUploader"
+            onClientUploadComplete={(res) => {
+              if (res && res.length > 0) {
+                const uploadedImage = res[0];
+                setImageUrl(uploadedImage.url);
+              }
+              alert("Upload Completed");
+              setIsUploading(false);
+            }}
+            onUploadError={(error: Error) => {
+              alert(`ERROR! ${error.message}`);
+              setIsUploading(false);
+            }}
+            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:border-gray-500 hover:border-gray-400 transition"
+          />
+        </div>
+        {isUploading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-100 bg-opacity-75">
+            <Spinner loadingScreen={true} />
+          </div>
+        )}
       </div>
 
       <button

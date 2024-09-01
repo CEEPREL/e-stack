@@ -1,11 +1,15 @@
 "use client";
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { saveProducts, loadProducts } from "@/utils/localStorage";
 import { ProductInterface } from "../../../../types";
 import { UploadButton } from "@/utils/uploadthing";
 import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import { Spinner } from "@/app/components/spinner/spinner";
 
-export default function AddProductForm() {
+export default function EditProductForm() {
+  const { id } = useParams();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState<number>(0);
@@ -15,9 +19,24 @@ export default function AddProductForm() {
 
   const router = useRouter();
 
-  const generateUniqueId = () => {
-    return `${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-  };
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const products = loadProducts();
+      const productToEdit = products.find((product) => product.id === id);
+
+      if (productToEdit) {
+        setName(productToEdit.name || "");
+        setDescription(productToEdit.description || "");
+        setPrice(productToEdit.price || 0);
+        setStock(productToEdit.stock || 0);
+        setImageUrl(productToEdit.image);
+      } else {
+        console.error("Product not found");
+        alert("Product not found");
+        router.push("/");
+      }
+    }
+  }, [id, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,34 +46,25 @@ export default function AddProductForm() {
       return;
     }
 
-    const id = generateUniqueId();
-
     try {
-      const newProduct: ProductInterface = {
-        id,
-        name,
-        description,
-        price,
-        stock,
-        image: imageUrl,
-      };
+      if (typeof window !== "undefined") {
+        const products = loadProducts();
+        const updatedProducts = products.map((product) =>
+          product.id === id
+            ? { ...product, name, description, price, stock, image: imageUrl }
+            : product
+        );
 
-      const products = loadProducts();
-      products.push(newProduct);
-      saveProducts(products);
+        saveProducts(updatedProducts);
 
-      alert("Product added successfully!");
-
-      setName("");
-      setDescription("");
-      setPrice(0);
-      setStock(0);
-      setImageUrl(null);
-
-      router.push("/");
+        alert("Product updated successfully!");
+        router.push("/");
+      } else {
+        console.error("localStorage is not available on the server side.");
+      }
     } catch (error) {
-      console.error("Error saving product:", error);
-      alert("Error saving product");
+      console.error("Error updating product:", error);
+      alert("Error updating product");
     }
   };
 
@@ -63,7 +73,7 @@ export default function AddProductForm() {
       onSubmit={handleSubmit}
       className="flex flex-col space-y-4 p-6 max-w-md mx-auto bg-white rounded-lg shadow-lg"
     >
-      <h1 className="text-xl font-semibold mb-4">Add Product</h1>
+      <h1 className="text-xl font-semibold mb-4">Edit Product</h1>
 
       <label className="font-semibold">Product Name</label>
       <input
@@ -103,8 +113,9 @@ export default function AddProductForm() {
         required
         className="border border-gray-300 rounded-md p-2 focus:outline-none focus:border-gray-500 hover:border-gray-400 transition"
       />
+
       <label className="font-semibold">Product Image</label>
-      <div onClick={() => setIsUploading(true)}>
+      <div className="relative" onClick={() => setIsUploading(true)}>
         <UploadButton
           endpoint="imageUploader"
           onClientUploadComplete={(res) => {
@@ -120,7 +131,12 @@ export default function AddProductForm() {
             setIsUploading(false);
           }}
           className="border border-gray-300 rounded-md p-2 focus:outline-none focus:border-gray-500 hover:border-gray-400 transition"
-        />
+        />{" "}
+        {isUploading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-100 bg-opacity-75">
+            <Spinner loadingScreen={true} />
+          </div>
+        )}
       </div>
 
       <button
