@@ -1,0 +1,83 @@
+[
+  {
+    "id": "1",
+    "name": "Female Brown Bag",
+    "description": "Classic Luxury brown bag",
+    "price": 99999,
+    "image": "/images/brownBag.jpeg",
+    "stock": 10,
+    "category": "bags"
+  },
+  {
+    "id": "2",
+    "name": "Necklace with flower",
+    "description": "Gold necklace with flower pendant",
+    "price": 99999,
+    "image": "/images/ChainFlower.jpg",
+    "stock": 29,
+    "category": "jewelries"
+  },
+  {
+    "id": "3",
+    "name": "Necklace with crown",
+    "description": "Gold necklace with crown pendant",
+    "price": 39999,
+    "image": "/images/ChainCrown.jpg",
+    "stock": 33,
+    "category": "jewelries"
+  },
+  {
+    "id": "4",
+    "name": "female Red Shoe",
+    "description": "handmade female Red Shoe with hill",
+    "price": 39999,
+    "image": "/images/FemaleRedShoe.jpeg",
+    "stock": 10,
+    "category": "shoes"
+  },
+  {
+    "id": "5",
+    "name": "female Black Shoe",
+    "description": "handmade female Black Shoe with hill",
+    "price": 44999,
+    "image": "/images/FemaleBlackShoes.jpeg",
+    "stock": 10,
+    "category": "shoes"
+  },
+  {
+    "id": "6",
+    "name": "female brown boot",
+    "description": "handmade female brown boot with hill",
+    "price": 44999,
+    "image": "/images/femaleBrownBoot.jpeg",
+    "stock": 10,
+    "category": "shoes"
+  },
+  {
+    "id": "7",
+    "name": "Female Brown watch",
+    "description": "pegeon handmade female brown with leather",
+    "price": 44999,
+    "image": "/images/femaleBrownWatch.jpeg",
+    "stock": 10,
+    "category": "watch"
+  },
+  {
+    "id": "8",
+    "name": "male Black watch",
+    "description": "carter handmade male leather watch ",
+    "price": 44999,
+    "image": "/images/VintageMaleblackWatch.jpeg",
+    "stock": 10,
+    "category": "watch"
+  },
+  {
+    "id": "9",
+    "name": "Ring",
+    "description": "Complete ring in Box",
+    "price": 39000,
+    "image": "/images/RingBox.jpg",
+    "stock": 100,
+    "category": "jewelries"
+  }
+]
