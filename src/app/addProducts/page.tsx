@@ -30,7 +30,6 @@ export default function AddProductForm() {
     const id = generateUniqueId();
 
     try {
-      // Create the new product object
       const newProduct: ProductInterface = {
         id,
         name,
