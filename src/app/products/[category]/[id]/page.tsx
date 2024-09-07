@@ -24,6 +24,7 @@ export default function ProductDetails({ params }: ParamsInterface) {
     undefined
   );
   const router = useRouter();
+
   useEffect(() => {
     const getProduct = () => {
       const products = loadProducts();
@@ -83,16 +84,16 @@ export default function ProductDetails({ params }: ParamsInterface) {
         {loading ? (
           <Spinner loadingScreen={true} />
         ) : product ? (
-          <article className="w-full max-w-4xl mx-auto px-4 py-8 bg-white shadow-md rounded-lg">
+          <article className="w-full max-w-4xl mx-auto px-4 py-8 bg-white dark:bg-gray-800 shadow-md rounded-lg">
             <div className="flex justify-between items-center mb-4">
               <Button
                 type="button"
                 text="Back"
-                className="bg-gray-200 text-black font-semibold py-2 px-4 rounded-md hover:bg-gray-300 transition"
+                className="bg-gray-200 dark:bg-gray-700 text-black dark:text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition"
                 handleClick={() => router.back()}
                 disabled={false}
               />
-              <h1 className="text-2xl font-semibold">{product.name}</h1>
+              <h1 className="text-2xl font-semibold dark:text-white">{product.name}</h1>
             </div>
             <div className="flex flex-col md:flex-row gap-8">
               <div className="flex-1 flex justify-center items-center mb-6 md:mb-0">
@@ -102,25 +103,25 @@ export default function ProductDetails({ params }: ParamsInterface) {
                     alt={`${product.name} image`}
                     width={288}
                     height={288}
-                    className="rounded-md border border-gray-300"
+                    className="rounded-md border border-gray-300 dark:border-gray-600"
                   />
                 ) : (
-                  <div className="rounded-md border border-gray-300 p-4 text-gray-400 flex items-center justify-center">
+                  <div className="rounded-md border border-gray-300 dark:border-gray-600 p-4 text-gray-400 flex items-center justify-center">
                     No Image Available
                   </div>
                 )}
               </div>
               <div className="flex-1 md:text-right">
-                <p className="text-lg font-medium mb-2">
+                <p className="text-lg font-medium mb-2 dark:text-gray-200">
                   {product.description}
                 </p>
-                <p className="text-sm text-gray-600 mb-2">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                   Stock: {product.stock ?? 0}
                 </p>
-                <p className="text-2xl font-bold mb-4">₦ {product.price}</p>
+                <p className="text-2xl font-bold mb-4 dark:text-white">₦ {product.price}</p>
                 <div className="flex justify-end gap-3">
                   <Link
-                    className="bg-gray-200 text-black font-semibold py-2 px-4 rounded-md hover:bg-gray-300 transition"
+                    className="bg-gray-200 dark:bg-gray-700 text-black dark:text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition"
                     href={`/editPage/${id}`}
                   >
                     Edit
@@ -128,7 +129,7 @@ export default function ProductDetails({ params }: ParamsInterface) {
                   <Button
                     type="button"
                     text="Delete"
-                    className="bg-red-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-600 transition"
+                    className="bg-red-500 dark:bg-red-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-600 dark:hover:bg-red-700 transition"
                     handleClick={handleDelete}
                     disabled={loading}
                   />
@@ -137,7 +138,7 @@ export default function ProductDetails({ params }: ParamsInterface) {
             </div>
           </article>
         ) : (
-          <p>Product not found.</p>
+          <p className="dark:text-white">Product not found.</p>
         )}
       </SectionContainer>
     </>
