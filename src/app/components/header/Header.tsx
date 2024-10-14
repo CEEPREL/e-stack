@@ -29,15 +29,15 @@ export const Header = () => {
   };
 
   return (
-    <header className="bg-gray-100 shadow-md p-4">
+    <header className="bg-gray-100 items-center justify-center shadow-md p-4">
       <nav className="flex items-center justify-between max-w-7xl mx-auto">
-        <Link href="/" className="flex items-center">
-          <h1 className="flex self-center text-[10px] md:text-3xl lg:text-4xl text-gray-800">
+        <Link href="/" className="flex items-center justify-center">
+          <h1 className="flex pr-2 items-center text-[10px] md:text-3xl lg:text-4xl text-gray-800">
             E-STACK
           </h1>
         </Link>
 
-        <div className="relative flex-grow max-w-lg">
+        <div className="relative items-center pb-5 justify-center flex-grow max-w-lg">
           <SearchDropdown products={products} />
         </div>
 
