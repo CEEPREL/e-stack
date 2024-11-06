@@ -6,7 +6,7 @@ import { ProductInterface } from "../../../../types";
 import { UploadButton } from "@/utils/uploadthing";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
-import { Spinner } from "@/app/components/spinner/spinner";
+import { Spinner } from "@/components/spinner/spinner";
 
 export default function EditProductForm() {
   const { id } = useParams();

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Header } from "./components/header/Header";
+import { Header } from "@/components/header/Header";
 import StoreProvider from "./store-provider";
+import { cn } from "@/lib/utils";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "E-Stack a Platform for shopping in style",
@@ -38,7 +39,12 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="#000000" content="#ffffff" />
       </head>
-      <body className={inter.className}>
+      <body
+        className={cn(
+          "bg-background min-h-screen font-sans antialiased",
+          inter.variable
+        )}
+      >
         <StoreProvider>
           <Header />
           <main>{children}</main>

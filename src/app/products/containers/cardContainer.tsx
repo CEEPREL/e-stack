@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { ProductInterface } from "../../../../types";
 import { Card } from "./card";
-import { Spinner } from "@/app/components/spinner/spinner";
+import { Spinner } from "@/components/spinner/spinner";
 import { loadProducts } from "@/utils/localStorage";
 import Link from "next/link";
 

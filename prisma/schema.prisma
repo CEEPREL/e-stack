@@ -13,7 +13,7 @@ datasource db {
 model Product {
   id                     String                 @id @default(uuid())
   name                   String
-  priceInCents           Int
+  priceInNaira           Int
   filePath               String
   imagePath              String
   description            String
@@ -34,7 +34,7 @@ model User {
 
 model Order {
   id               String   @id @default(uuid())
-  pricePaidInCents Int
+  pricePaidInNaira Int
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
