@@ -60,17 +60,21 @@ async function ProductTable() {
         </TableHeader>
         <TableBody>
           {products.map((product) => (
-            <TableCell>
-              {product.isAvailableForPurchase ? (
-                <div>
-                  <CheckCircle2 />
-                </div>
-              ) : (
-                <div>
-                  <XCircle />
-                </div>
-              )}
-            </TableCell>
+            <TableRow key={product.id}>
+              <TableCell>
+                {product.isAvailableForPurchase ? (
+                  <>
+                    <span className="sr-only">Available</span>
+                    <CheckCircle2 />
+                  </>
+                ) : (
+                  <>
+                    <span className="sr-only">Unavailable</span>
+                    <XCircle className="stroke-destructive" />
+                  </>
+                )}
+              </TableCell>
+            </TableRow>
           ))}
         </TableBody>
       </Table>
