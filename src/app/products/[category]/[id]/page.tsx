@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { loadProducts, saveProducts } from "@/utils/localStorage";
 import Image from "next/image";
-import { SectionContainer } from "@/app/components/section-container/section-container";
-import { Spinner } from "@/app/components/spinner/spinner";
-import { Button } from "@/app/components/button/button";
+import { SectionContainer } from "@/components/section-container/section-container";
+import { Spinner } from "@/components/spinner/spinner";
+import { Button } from "@/components/button/button";
 import { type ProductInterface } from "../../../../../types";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -93,7 +93,9 @@ export default function ProductDetails({ params }: ParamsInterface) {
                 handleClick={() => router.back()}
                 disabled={false}
               />
-              <h1 className="text-2xl font-semibold dark:text-white">{product.name}</h1>
+              <h1 className="text-2xl font-semibold dark:text-white">
+                {product.name}
+              </h1>
             </div>
             <div className="flex flex-col md:flex-row gap-8">
               <div className="flex-1 flex justify-center items-center mb-6 md:mb-0">
@@ -118,7 +120,9 @@ export default function ProductDetails({ params }: ParamsInterface) {
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                   Stock: {product.stock ?? 0}
                 </p>
-                <p className="text-2xl font-bold mb-4 dark:text-white">₦ {product.price}</p>
+                <p className="text-2xl font-bold mb-4 dark:text-white">
+                  ₦ {product.price}
+                </p>
                 <div className="flex justify-end gap-3">
                   <Link
                     className="bg-gray-200 dark:bg-gray-700 text-black dark:text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition"
