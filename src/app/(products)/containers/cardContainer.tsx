@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Card } from "./card";
+import { ProductCards } from "./card";
 import { Spinner } from "@/components/spinner/spinner";
 import { getProductsApi } from "@/app/api/productAPI/productApi";
 
@@ -30,7 +30,7 @@ const ProductsDisplay = () => {
   return (
     <div className="grid justify-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
       {products.map((doc) => (
-        <Card
+        // <ProductCards
           key={doc.id}
           id={doc.id}
           description={doc.description}
