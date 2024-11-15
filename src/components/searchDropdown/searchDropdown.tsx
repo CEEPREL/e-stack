@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ProductInterface } from "../../../../types";
+import { ProductInterface } from "../../../types";
 
 interface SearchDropdownProps {
   products: ProductInterface[];

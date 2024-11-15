@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { loadProducts } from "@/utils/localStorage";
 import Link from "next/link";
-import { ProductInterface } from "../../../../types";
+import { ProductInterface } from "../../../types";
 import SearchDropdown from "../searchDropdown/searchDropdown";
 
 export const Header = () => {
@@ -32,8 +32,8 @@ export const Header = () => {
     <header className="bg-gray-100 items-center justify-center shadow-md p-4">
       <nav className="flex items-center justify-between max-w-7xl mx-auto">
         <Link href="/" className="flex items-center justify-center">
-          <h1 className="flex pr-2 items-center text-[10px] md:text-3xl lg:text-4xl text-gray-800">
-            E-STACK
+          <h1 className="flex pr-2 items-center text-[4px] md:text-3xl lg:text-4xl text-gray-800">
+            AGRO-PRICIOUS
           </h1>
         </Link>
 

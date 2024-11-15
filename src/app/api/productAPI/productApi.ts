@@ -1,13 +1,8 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { loadProducts } from "../../../utils/localStorage";
-
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { category } = req.query;
-  let products = loadProducts();
-
-  if (category) {
-    products = products.filter((product: any) => product.category === category);
+import mg from "@/app/api/productAPI/products";
+export async function getProductsApi() {
+  const response = await fetch("api/productAPI/products");
+  if (!response.ok) {
+    throw new Error("Failed to fetch products");
   }
-
-  res.status(200).json(products);
+  return response.json();
 }

@@ -1,15 +1,9 @@
-import Category from "./products/[category]/page";
+import HomePage from "./(products)/page";
 
-interface ParamsInterface {
-  params?: {
-    category: string;
-  };
-}
-
-export default function Main({ params }: ParamsInterface) {
+export default function Main() {
   return (
     <>
-      <Category params={{ category: "" }} />
+      <HomePage />
     </>
   );
 }
