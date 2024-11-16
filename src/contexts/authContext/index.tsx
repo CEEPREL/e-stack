@@ -1,41 +1,60 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, ReactNode } from "react";
 import { auth } from "@/app/firebase/firebase";
-// import { GoogleAuthProvider } from "firebase/auth";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
 
-const AuthContext = React.createContext();
-
-export function useAuth() {
-  return useContext(AuthContext);
+// Define the types for the context value
+interface AuthContextType {
+  userLoggedIn: boolean;
+  isEmailUser: boolean;
+  isGoogleUser: boolean;
+  currentUser: FirebaseUser | null;
+  setCurrentUser: React.Dispatch<React.SetStateAction<FirebaseUser | null>>;
 }
 
-export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [userLoggedIn, setUserLoggedIn] = useState(false);
-  const [isEmailUser, setIsEmailUser] = useState(false);
-  const [isGoogleUser, setIsGoogleUser] = useState(false);
-  const [loading, setLoading] = useState(true);
+// Create the context with a default value of `null`
+const AuthContext = React.createContext<AuthContextType | null>(null);
+
+// Hook to use the AuthContext
+export function useAuth(): AuthContextType {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+}
+
+// Define the AuthProvider props type
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
+  const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
+  const [userLoggedIn, setUserLoggedIn] = useState<boolean>(false);
+  const [isEmailUser, setIsEmailUser] = useState<boolean>(false);
+  const [isGoogleUser, setIsGoogleUser] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, initializeUser);
     return unsubscribe;
   }, []);
 
-  async function initializeUser(user) {
+  const initializeUser = (user: FirebaseUser | null) => {
     if (user) {
-      setCurrentUser({ ...user });
+      setCurrentUser(user);
 
-      // check if provider is email and password login
+      // Check if provider is email and password login
       const isEmail = user.providerData.some(
         (provider) => provider.providerId === "password"
       );
       setIsEmailUser(isEmail);
 
-      // check if the auth provider is google or not
-      //   const isGoogle = user.providerData.some(
-      //     (provider) => provider.providerId === GoogleAuthProvider.PROVIDER_ID
-      //   );
-      //   setIsGoogleUser(isGoogle);
+      // Add logic for Google authentication if needed
+      const isGoogle = user.providerData.some(
+        (provider) => provider.providerId === "google.com"
+      );
+      setIsGoogleUser(isGoogle);
 
       setUserLoggedIn(true);
     } else {
@@ -44,9 +63,9 @@ export function AuthProvider({ children }) {
     }
 
     setLoading(false);
-  }
+  };
 
-  const value = {
+  const value: AuthContextType = {
     userLoggedIn,
     isEmailUser,
     isGoogleUser,

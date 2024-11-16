@@ -13,18 +13,18 @@ import {
 // Define the return type for functions interacting with Firebase Authentication
 type AuthResult = Promise<UserCredential | void>;
 
-export const doCreateUserWithEmailAndPassword = async (
+export async function doCreateUserWithEmailAndPassword(
   email: string,
   password: string
-): AuthResult => {
-  return createUserWithEmailAndPassword(auth, email, password);
-};
+) {
+  return await createUserWithEmailAndPassword(auth, email, password);
+}
 
 export const doSignInWithEmailAndPassword = (
   email: string,
   password: string
 ): AuthResult => {
-  return signInWithEmailAndPassword(auth, email, password);
+  return signInWithEmailAndPassword(auth, email, password) as AuthResult;
 };
 
 export const doSignInWithGoogle = async (): Promise<void> => {

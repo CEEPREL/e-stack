@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/header/Header";
 import StoreProvider from "./store-provider";
 import { cn } from "@/lib/utils";
+import { AuthProvider } from "@/contexts/authContext";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -45,10 +46,12 @@ export default function RootLayout({
           inter.variable
         )}
       >
-        <StoreProvider>
-          <Header />
-          <main>{children}</main>
-        </StoreProvider>
+        <AuthProvider>
+          <StoreProvider>
+            <Header />
+            <main>{children}</main>
+          </StoreProvider>
+        </AuthProvider>
       </body>
     </html>
   );
