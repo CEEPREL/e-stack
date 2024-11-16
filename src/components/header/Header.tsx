@@ -29,7 +29,7 @@ export const Header = () => {
   };
 
   return (
-    <header className="bg-gray-100 items-center justify-center shadow-md p-4">
+    <header className=" fixed z-10 w-full bg-gray-100 items-center justify-center shadow-md p-4">
       <nav className="flex items-center justify-between max-w-7xl mx-auto">
         <Link href="/" className="flex items-center justify-center">
           <h1 className="flex pr-2 items-center text-[4px] md:text-3xl lg:text-4xl text-gray-800">
