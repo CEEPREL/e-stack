@@ -7,38 +7,56 @@ import {
   updatePassword,
   signInWithPopup,
   GoogleAuthProvider,
+  UserCredential,
 } from "firebase/auth";
 
-export const doCreateUserWithEmailAndPassword = async (email, password) => {
+// Define the return type for functions interacting with Firebase Authentication
+type AuthResult = Promise<UserCredential | void>;
+
+export const doCreateUserWithEmailAndPassword = async (
+  email: string,
+  password: string
+): AuthResult => {
   return createUserWithEmailAndPassword(auth, email, password);
 };
 
-export const doSignInWithEmailAndPassword = (email, password) => {
+export const doSignInWithEmailAndPassword = (
+  email: string,
+  password: string
+): AuthResult => {
   return signInWithEmailAndPassword(auth, email, password);
 };
 
-export const doSignInWithGoogle = async () => {
+export const doSignInWithGoogle = async (): Promise<void> => {
   const provider = new GoogleAuthProvider();
   const result = await signInWithPopup(auth, provider);
   const user = result.user;
 
-  // add user to firestore
+  // Add logic to handle the user (e.g., add user to Firestore)
 };
 
-export const doSignOut = () => {
+export const doSignOut = (): Promise<void> => {
   return auth.signOut();
 };
 
-export const doPasswordReset = (email) => {
+export const doPasswordReset = (email: string): Promise<void> => {
   return sendPasswordResetEmail(auth, email);
 };
 
-export const doPasswordChange = (password) => {
-  return updatePassword(auth.currentUser, password);
+export const doPasswordChange = (password: string): Promise<void> => {
+  const currentUser = auth.currentUser;
+  if (!currentUser) {
+    throw new Error("No authenticated user to update the password.");
+  }
+  return updatePassword(currentUser, password);
 };
 
-export const doSendEmailVerification = () => {
-  return sendEmailVerification(auth.currentUser, {
+export const doSendEmailVerification = (): Promise<void> => {
+  const currentUser = auth.currentUser;
+  if (!currentUser) {
+    throw new Error("No authenticated user to send email verification.");
+  }
+  return sendEmailVerification(currentUser, {
     url: `${window.location.origin}/home`,
   });
 };
