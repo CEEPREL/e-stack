@@ -3,13 +3,13 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDnq-wpKs4pYTRRP6wALyAOD5y-9XC-bO0",
-  authDomain: "pricious-store-7fc14.firebaseapp.com",
-  projectId: "pricious-store-7fc14",
-  storageBucket: "pricious-store-7fc14.firebasestorage.app",
-  messagingSenderId: "440695046088",
-  appId: "1:440695046088:web:fe843ebd01238e865b0afd",
-  measurementId: "G-8PHH0TMD6D",
+  apiKey: process.env.NEXT_API_KEY,
+  authDomain: process.env.NEXT_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PROJECT_ID,
+  storageBucket: process.env.NEXT_STORAGE_BUCKETNEXT_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_APP_ID,
+  measurementId: process.env.NEXT_MEASSUREMENT_ID,
 };
 
 // Initialize Firebase
