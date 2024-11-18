@@ -2,6 +2,7 @@ import db from "@/db/db";
 import { Product } from "@prisma/client";
 import React, { Suspense } from "react";
 import { ProductCards, Skeletal } from "./containers/card";
+import { Header } from "@/components/header/Header";
 
 function getNewProducts() {
   return db.product.findMany({
@@ -14,6 +15,7 @@ function getNewProducts() {
 export default function HomePage() {
   return (
     <main>
+      <Header />
       <ProductDisplay productsFetcher={getNewProducts} title="New" />
     </main>
   );

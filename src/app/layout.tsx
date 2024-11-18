@@ -48,7 +48,7 @@ export default function RootLayout({
       >
         <AuthProvider>
           <StoreProvider>
-            <Header />
+            {/* <Header /> */}
             <main>{children}</main>
           </StoreProvider>
         </AuthProvider>
