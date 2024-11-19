@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ProductInterface } from "../../../types";
+import { Button } from "../ui/button";
 
 interface SearchDropdownProps {
   products: ProductInterface[];
@@ -40,14 +41,9 @@ export default function SearchDropdown({ products }: SearchDropdownProps) {
           placeholder="Search products..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:border-gray-500 hover:border-gray-400 transition"
+          className="border border-gray-300 rounded-md mx-5 p-2 w-full focus:outline-none focus:border-gray-500 hover:border-gray-400 transition"
         />
-        <button
-          onClick={handleSearch}
-          className="bg-gray-800 text-white font-semibold py-2 px-4 rounded-md ml-2 hover:bg-gray-700 transition"
-        >
-          Search
-        </button>
+        <Button onClick={handleSearch}>Search</Button>
       </div>
       {filteredProducts.length > 0 && (
         <div className="absolute z-10 mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg">
