@@ -1,51 +1,74 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/app/firebase/firebase";
 import { useRouter } from "next/navigation";
+import { FirebaseError } from "firebase/app";
 
-const SignIn = () => {
+const SignIn = ({ onClose }: { onClose: () => void }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState(""); // State for error messages
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(true);
 
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
   const router = useRouter();
 
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden"; // Prevent scrolling
+    } else {
+      document.body.style.overflow = "auto"; // Restore scrolling
+    }
+
+    return () => {
+      document.body.style.overflow = "auto"; // Cleanup on unmount
+    };
+  }, [isModalOpen]);
+
   const handleSignIn = async () => {
     try {
-      setErrorMessage(""); // Clear previous errors
+      setErrorMessage("");
       const res = await signInWithEmailAndPassword(email, password);
-      console.log({ res });
 
-      // Reset form inputs
-      setEmail("");
-      setPassword("");
-
-      // Redirect to home page
-      router.push("/");
+      if (res?.user) {
+        setEmail("");
+        setPassword("");
+        setIsModalOpen(false); // Close modal
+        router.push("/"); // Redirect to home page
+      }
     } catch (e) {
       console.error(e);
-      // Display user-friendly error messages based on Firebase error codes
-      switch (e.code) {
-        case "auth/user-not-found":
-          setErrorMessage("No user found with this email. Please sign up.");
-          break;
-        case "auth/wrong-password":
-          setErrorMessage("Incorrect password. Please try again.");
-          break;
-        case "auth/invalid-email":
-          setErrorMessage("Invalid email format. Please check your email.");
-          break;
-        default:
-          setErrorMessage("An unexpected error occurred. Please try again.");
+      if (e instanceof FirebaseError) {
+        switch (e.code) {
+          case "auth/user-not-found":
+            setErrorMessage("No user found with this email. Please sign up.");
+            break;
+          case "auth/wrong-password":
+            setErrorMessage("Incorrect password. Please try again.");
+            break;
+          case "auth/invalid-email":
+            setErrorMessage("Invalid email format. Please check your email.");
+            break;
+          default:
+            setErrorMessage("An unexpected error occurred. Please try again.");
+        }
       }
     }
   };
 
+  if (!isModalOpen) return null; // Hide modal if closed
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <div className="bg-gray-800 p-10 rounded-lg shadow-xl w-96">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <button
+        onClick={onClose} // Close modal
+        className="absolute top-5 right-5 text-white bg-red-500 p-2 rounded"
+      >
+        Close
+      </button>
+      <div className="flex flex-col items-center justify-center h-auto bg-gray-800 p-10 rounded-lg shadow-xl w-96">
+        <p className="text-white">Welcome back</p>
         <h1 className="text-white text-2xl mb-5">Sign In</h1>
 
         {errorMessage && (
@@ -59,18 +82,18 @@ const SignIn = () => {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-3 mb-4 bg-gray-700 rounded outline-none text-white placeholder-gray-500"
+          className="w-full p-3 mb-4 bg-gray-700 rounded outline-none text-white placeholder-gray-100"
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-3 mb-4 bg-gray-700 rounded outline-none text-white placeholder-gray-500"
+          className="w-full p-3 mb-4 bg-gray-700 rounded outline-none text-white placeholder-gray-100"
         />
         <button
           onClick={handleSignIn}
-          className="w-full p-3 bg-indigo-600 rounded text-white hover:bg-indigo-500"
+          className="w-full p-3 bg-gray-700 rounded text-white hover:bg-gray-900"
         >
           Sign In
         </button>

@@ -1,62 +1,41 @@
-import db from "@/db/db";
-import { Product } from "@prisma/client";
-import React, { Suspense } from "react";
-import { ProductCards, Skeletal } from "./containers/card";
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { Header } from "@/components/header/Header";
+import SignIn from "../(auth)/sign-in/page";
+import { MainProductDispay } from "./containers/gridProduct";
+export default function Page() {
+  const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-function getNewProducts() {
-  return db.product.findMany({
-    where: { isAvailableForPurchase: true },
-    orderBy: { createdAt: "desc" },
-    take: 6,
-  });
-}
+  // Check the query parameter on initial load or router change
+  useEffect(() => {
+    if (router.query.signin) {
+      setIsModalOpen(true);
+    }
+  }, [router.query]);
 
-export default function HomePage() {
-  return (
-    <main>
-      <Header />
-      <ProductDisplay productsFetcher={getNewProducts} title="New" />
-    </main>
-  );
-}
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+    // Optionally, update the URL to include the query parameter
+    router.push({ query: { ...router.query, signin: true } }, undefined, {
+      shallow: true,
+    });
+  };
 
-type ProductGridSectionProps = {
-  title: string;
-  productsFetcher: () => Promise<Product[]>;
-};
-function ProductDisplay({ productsFetcher, title }: ProductGridSectionProps) {
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    // Optionally, remove the query parameter from the URL
+    const { signin, ...rest } = router.query;
+    router.push({ query: { ...rest } }, undefined, { shallow: true });
+  };
+
   return (
     <>
-      <div>{title}</div>
-      <div className="flex mt-28 items-center justify-center ">
-        <div className="grid  items-center justify-between grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          <Suspense
-            fallback={
-              <>
-                <Skeletal />
-                <Skeletal />
-                <Skeletal />
-                <Skeletal />
-                <Skeletal />
-                <Skeletal />
-              </>
-            }
-          >
-            <ProductSuspense productsFetcher={productsFetcher} />
-          </Suspense>
-        </div>
-      </div>
+      <Header handleclick={handleModalOpen} />
+      <MainProductDispay />
+      {isModalOpen && <SignIn onClose={handleModalClose} />}
     </>
   );
-}
-
-async function ProductSuspense({
-  productsFetcher,
-}: {
-  productsFetcher: () => Promise<Product[]>;
-}) {
-  return (await productsFetcher()).map((product) => (
-    <ProductCards key={product.id} {...product} />
-  ));
 }

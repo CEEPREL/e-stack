@@ -4,8 +4,13 @@ import { loadProducts } from "@/utils/localStorage";
 import Link from "next/link";
 import { ProductInterface } from "../../../types";
 import SearchDropdown from "../searchDropdown/searchDropdown";
+import { Button } from "../ui/button";
 
-export const Header = () => {
+interface HeaderProps {
+  handleclick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
+export const Header = ({ handleclick }: HeaderProps) => {
   const [keyword, setKeyword] = useState("");
   const [results, setResults] = useState<ProductInterface[]>([]);
   const [products, setProducts] = useState<ProductInterface[]>([]);
@@ -22,14 +27,13 @@ export const Header = () => {
       (product) =>
         product.name?.toLowerCase().includes(lowerKeyword) ||
         product.description?.toLowerCase().includes(lowerKeyword) ||
-        product.category?.toLowerCase().includes(lowerKeyword) ||
-        ""
+        product.category?.toLowerCase().includes(lowerKeyword)
     );
     setResults(filteredResults);
   };
 
   return (
-    <header className=" fixed z-10 w-full bg-gray-100 items-center justify-center shadow-md p-4">
+    <header className="fixed z-10 w-full bg-gray-100 items-center justify-center shadow-md p-4">
       <nav className="flex items-center justify-between max-w-7xl mx-auto">
         <Link href="/" className="flex items-center justify-center">
           <h1 className="flex pr-2 items-center text-[4px] md:text-3xl lg:text-4xl text-gray-800">
@@ -40,6 +44,7 @@ export const Header = () => {
         <div className="relative items-center pb-5 justify-center flex-grow max-w-lg">
           <SearchDropdown products={products} />
         </div>
+        <Button onClick={handleclick}>Sign in</Button>
 
         <div className="hidden md:flex space-x-4">
           {results.map((product) => (

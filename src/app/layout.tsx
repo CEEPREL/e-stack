@@ -5,6 +5,7 @@ import { Header } from "@/components/header/Header";
 import StoreProvider from "./store-provider";
 import { cn } from "@/lib/utils";
 import { AuthProvider } from "@/contexts/authContext";
+import ModalPath from "./(products)/containers/modalPath";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -48,7 +49,6 @@ export default function RootLayout({
       >
         <AuthProvider>
           <StoreProvider>
-            {/* <Header /> */}
             <main>{children}</main>
           </StoreProvider>
         </AuthProvider>
