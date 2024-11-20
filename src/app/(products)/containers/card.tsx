@@ -21,7 +21,7 @@ export const ProductCards = ({
   return (
     <div className=" border border-slate-300 dark:border-gray-600 rounded-sm bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-shadow">
       {/* Image Section */}
-      <Link href={`/products/${id}/viewProduct`}>
+      <Link href={`/${id}/product-details`}>
         <div className="relative w-full aspect-square">
           <Image
             src={`/${imagePath.replace(/^public\//, "")}` || ""}
@@ -50,7 +50,7 @@ export const ProductCards = ({
         </p>
         <div className="pt-3 flex justify-center ">
           <Button className="border text-black border-slate-300 dark:border-gray-600 rounded-md text-center w-28 h-9 flex items-center justify-center bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all">
-            <Link href={`/products/${id}/purchase`}>Buy</Link>
+            <Link href={`/${id}/purchase`}>Buy</Link>
           </Button>
         </div>
       </div>

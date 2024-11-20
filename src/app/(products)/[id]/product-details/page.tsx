@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import db from "@/db/db";
 import { Product } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,9 +19,21 @@ function ViewProduct({ product }: { product: Product | null }) {
       <h3>{product?.name}</h3>
       <p>{product?.description}</p>
       <Button>
-        <Link href="/admin/products">Back</Link>
+        <Link href="/">Back</Link>
       </Button>
     </div>
   );
 }
-export default ViewProduct;
+
+export default async function ViewProductPage({
+  params: { id },
+}: {
+  params: { id: string };
+}) {
+  const product = await db.product.findUnique({ where: { id } });
+  return (
+    <div>
+      <ViewProduct product={product} />
+    </div>
+  );
+}

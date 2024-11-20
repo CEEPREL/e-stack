@@ -34,6 +34,8 @@ export function ProductDisplay({
                 <Skeletal />
                 <Skeletal />
                 <Skeletal />
+                <Skeletal />
+                <Skeletal />
               </>
             }
           >

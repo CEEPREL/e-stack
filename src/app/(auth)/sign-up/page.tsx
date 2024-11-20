@@ -4,7 +4,13 @@ import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/app/firebase/firebase";
 import { updateProfile } from "firebase/auth";
 
-const SignUp = () => {
+const SignUp = ({
+  onClose,
+  toSignIn,
+}: {
+  onClose: () => void;
+  toSignIn: () => void;
+}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -35,7 +41,13 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <button
+        onClick={onClose} // Close modal
+        className="absolute top-5 right-5 text-white bg-red-500 p-2 rounded"
+      >
+        Close
+      </button>
       <div className="bg-gray-800 p-10 rounded-lg shadow-xl w-96">
         <h1 className="text-white text-2xl mb-5">Sign Up</h1>
         <input
@@ -72,6 +84,12 @@ const SignUp = () => {
           disabled={loading}
         >
           {loading ? "Signing Up..." : "Sign Up"}
+        </button>
+        <button onClick={toSignIn} className=" text-white">
+          Have an account?{" "}
+          <span className="text-indigo-600 hover:text-indigo-800 underline">
+            Sign in Here
+          </span>
         </button>
         {error && <p className="text-red-500 mt-3">{error.message}</p>}
       </div>

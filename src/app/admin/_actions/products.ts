@@ -81,7 +81,7 @@ export async function updateProduct(
   if (result.success === false) {
     return result.error.formErrors.fieldErrors;
   }
-
+  const path = require("path");
   const data = result.data;
   const product = await db.product.findUnique({ where: { id } });
 
@@ -89,16 +89,34 @@ export async function updateProduct(
 
   let filePath = product.filePath;
   if (data.file != null && data.file.size > 0) {
-    await fs.unlink(product.filePath);
+    const resolvedFilePath = path.resolve("public", product.filePath);
+
+    // Check if file exists before unlinking
+    if (await fs.stat(resolvedFilePath).catch(() => false)) {
+      await fs.unlink(resolvedFilePath);
+    }
+
     filePath = `products/${crypto.randomUUID()}-${data.file.name}`;
-    await fs.writeFile(filePath, Buffer.from(await data.file.arrayBuffer()));
+    await fs.writeFile(
+      path.resolve("public", filePath),
+      Buffer.from(await data.file.arrayBuffer())
+    );
   }
 
   let imagePath = product.imagePath;
   if (data.image != null && data.image.size > 0) {
-    await fs.unlink(`public${product.imagePath}`);
-    imagePath = `/products/${crypto.randomUUID()}-${data.image.name}`;
-    await fs.writeFile(imagePath, Buffer.from(await data.image.arrayBuffer()));
+    const resolvedImagePath = path.resolve("public", product.imagePath);
+
+    // Check if file exists before unlinking
+    if (await fs.stat(resolvedImagePath).catch(() => false)) {
+      await fs.unlink(resolvedImagePath);
+    }
+
+    imagePath = `products/${crypto.randomUUID()}-${data.image.name}`;
+    await fs.writeFile(
+      path.resolve("public", imagePath),
+      Buffer.from(await data.image.arrayBuffer())
+    );
   }
 
   await db.product.update({

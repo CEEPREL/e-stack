@@ -5,7 +5,13 @@ import { auth } from "@/app/firebase/firebase";
 import { useRouter } from "next/navigation";
 import { FirebaseError } from "firebase/app";
 
-const SignIn = ({ onClose }: { onClose: () => void }) => {
+const SignIn = ({
+  onClose,
+  toSignUp,
+}: {
+  onClose: () => void;
+  toSignUp: () => void;
+}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -96,6 +102,12 @@ const SignIn = ({ onClose }: { onClose: () => void }) => {
           className="w-full p-3 bg-gray-700 rounded text-white hover:bg-gray-900"
         >
           Sign In
+        </button>
+        <button onClick={toSignUp} className=" text-white">
+          New user?{" "}
+          <span className="text-indigo-600 hover:text-indigo-800 underline">
+            Sign up Here
+          </span>
         </button>
       </div>
     </div>

@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/header/Header";
 import StoreProvider from "./store-provider";
 import { cn } from "@/lib/utils";
 import { AuthProvider } from "@/contexts/authContext";
-import { MainProductDispay } from "./(products)/containers/gridProduct";
-import { TableFooter } from "@/components/ui/table";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -50,11 +47,7 @@ export default function RootLayout({
       >
         <AuthProvider>
           <StoreProvider>
-            <main>
-              {children}
-              <MainProductDispay />
-              <h1>hi</h1>
-            </main>
+            <main>{children}</main>
           </StoreProvider>
         </AuthProvider>
       </body>
