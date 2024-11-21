@@ -1,13 +1,16 @@
 "use client";
 import React, { useContext, useState, useEffect, ReactNode } from "react";
 import { auth } from "@/app/firebase/firebase";
-import { onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
+import {
+  onAuthStateChanged,
+  User as FirebaseUser,
+  signOut,
+} from "firebase/auth";
 
 // Define the types for the context value
 interface AuthContextType {
   userLoggedIn: boolean;
   isEmailUser: boolean;
-  isGoogleUser: boolean;
   currentUser: FirebaseUser | null;
   setCurrentUser: React.Dispatch<React.SetStateAction<FirebaseUser | null>>;
 }
@@ -33,7 +36,6 @@ export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
   const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
   const [userLoggedIn, setUserLoggedIn] = useState<boolean>(false);
   const [isEmailUser, setIsEmailUser] = useState<boolean>(false);
-  const [isGoogleUser, setIsGoogleUser] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -51,12 +53,6 @@ export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
       );
       setIsEmailUser(isEmail);
 
-      // Add logic for Google authentication if needed
-      const isGoogle = user.providerData.some(
-        (provider) => provider.providerId === "google.com"
-      );
-      setIsGoogleUser(isGoogle);
-
       setUserLoggedIn(true);
     } else {
       setCurrentUser(null);
@@ -69,7 +65,6 @@ export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
   const value: AuthContextType = {
     userLoggedIn,
     isEmailUser,
-    isGoogleUser,
     currentUser,
     setCurrentUser,
   };
