@@ -12,7 +12,7 @@ async function getNewProducts() {
   return db.product.findMany({
     where: { isAvailableForPurchase: true },
     orderBy: { createdAt: "desc" },
-    take: 6,
+    take: 12,
   });
 }
 

@@ -1,25 +1,40 @@
 "use client";
-import React, { useContext, useState, useEffect, ReactNode } from "react";
-import { auth } from "@/app/firebase/firebase";
-import {
-  onAuthStateChanged,
-  User as FirebaseUser,
-  signOut,
-} from "firebase/auth";
+import { auth, firebasedDB } from "@/app/firebase/firebase";
 
-// Define the types for the context value
+import React, { useContext, useState, useEffect, ReactNode } from "react";
+
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+  User as FirebaseUser,
+} from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+
+// Define the shape of the user object from Firestore
+type UserData = {
+  name?: string;
+  email?: string;
+  [key: string]: any; // For additional user fields in Firestore
+};
+
+// Define the shape of the Auth context
 interface AuthContextType {
-  userLoggedIn: boolean;
-  isEmailUser: boolean;
   currentUser: FirebaseUser | null;
-  setCurrentUser: React.Dispatch<React.SetStateAction<FirebaseUser | null>>;
+  userDataObj: UserData | null;
+  signup: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+  setUserDataObj: React.Dispatch<React.SetStateAction<UserData | null>>;
+  loading: boolean;
 }
 
-// Create the context with a default value of `null`
-const AuthContext = React.createContext<AuthContextType | null>(null);
+// Create the context with a default value
+const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
 
-// Hook to use the AuthContext
-export function useAuth(): AuthContextType {
+// Hook to use the Auth context
+export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
@@ -27,51 +42,63 @@ export function useAuth(): AuthContextType {
   return context;
 }
 
-// Define the AuthProvider props type
+// AuthProvider component
 interface AuthProviderProps {
   children: ReactNode;
 }
 
-export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
+export function AuthProvider({ children }: AuthProviderProps) {
   const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
-  const [userLoggedIn, setUserLoggedIn] = useState<boolean>(false);
-  const [isEmailUser, setIsEmailUser] = useState<boolean>(false);
+  const [userDataObj, setUserDataObj] = useState<UserData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
+  // AUTH HANDLERS
+  async function signup(email: string, password: string): Promise<void> {
+    await createUserWithEmailAndPassword(auth, email, password);
+  }
+
+  async function login(email: string, password: string): Promise<void> {
+    await signInWithEmailAndPassword(auth, email, password);
+  }
+
+  async function logout(): Promise<void> {
+    setUserDataObj(null);
+    setCurrentUser(null);
+    await signOut(auth);
+  }
+
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, initializeUser);
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      setLoading(true);
+      setCurrentUser(user);
+      try {
+        if (user) {
+          const docRef = doc(firebasedDB, "users", user.uid);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            setUserDataObj(docSnap.data() as UserData);
+          }
+        } else {
+          setUserDataObj(null);
+        }
+      } catch (err) {
+        console.error("Error fetching user data:", err);
+      } finally {
+        setLoading(false);
+      }
+    });
     return unsubscribe;
   }, []);
 
-  const initializeUser = (user: FirebaseUser | null) => {
-    if (user) {
-      setCurrentUser(user);
-
-      // Check if provider is email and password login
-      const isEmail = user.providerData.some(
-        (provider) => provider.providerId === "password"
-      );
-      setIsEmailUser(isEmail);
-
-      setUserLoggedIn(true);
-    } else {
-      setCurrentUser(null);
-      setUserLoggedIn(false);
-    }
-
-    setLoading(false);
-  };
-
   const value: AuthContextType = {
-    userLoggedIn,
-    isEmailUser,
     currentUser,
-    setCurrentUser,
+    userDataObj,
+    signup,
+    login,
+    logout,
+    setUserDataObj,
+    loading,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
