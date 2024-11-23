@@ -11,6 +11,7 @@ import {
   User as FirebaseUser,
 } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 
 // Define the shape of the user object from Firestore
 type UserData = {
@@ -28,6 +29,12 @@ interface AuthContextType {
   logout: () => Promise<void>;
   setUserDataObj: React.Dispatch<React.SetStateAction<UserData | null>>;
   loading: boolean;
+  isModalOpen: boolean;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isSignedUp: boolean;
+  setIsSignedUp: React.Dispatch<React.SetStateAction<boolean>>;
+  isSignInOpen: boolean;
+  setIsSignInOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // Create the context with a default value
@@ -49,8 +56,11 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
-  const [userDataObj, setUserDataObj] = useState<UserData | null>(null);
+  const [userDataObj, setUserDataObj] = useState<UserData | null>({});
   const [loading, setLoading] = useState<boolean>(true);
+  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isSignedUp, setIsSignedUp] = useState(true);
+  const [isSignInOpen, setIsSignInOpen] = useState(false);
 
   // AUTH HANDLERS
   async function signup(email: string, password: string): Promise<void> {
@@ -58,7 +68,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function login(email: string, password: string): Promise<void> {
-    await signInWithEmailAndPassword(auth, email, password);
+    await useSignInWithEmailAndPassword(auth);
   }
 
   async function logout(): Promise<void> {
@@ -98,6 +108,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
     logout,
     setUserDataObj,
     loading,
+    isModalOpen,
+    setIsModalOpen,
+    isSignedUp,
+    setIsSignedUp,
+    isSignInOpen,
+    setIsSignInOpen,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

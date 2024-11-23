@@ -3,7 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "./store-provider";
 import { cn } from "@/lib/utils";
-import { AuthProvider } from "@/contexts/authContext";
+import { AuthProvider } from "@/contexts/authContext/GlobalContext";
+import { Header } from "@/components/header/Header";
+// import { AuthProvider } from "@/contexts/authContext/GlobalContext";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -47,7 +49,8 @@ export default function RootLayout({
       >
         <AuthProvider>
           <StoreProvider>
-            <main>{children}</main>
+            <Header />
+            <main className="pt-32">{children}</main>
           </StoreProvider>
         </AuthProvider>
       </body>
