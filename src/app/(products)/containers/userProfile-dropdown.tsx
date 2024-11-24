@@ -16,8 +16,7 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ handleLogin }) => {
   const { currentUser, userDataObj, logout } = useAuth(); // Accessing user data from context
 
   const handleLogout = () => {
-    console.log("User logged out");
-    logout(); // Call the logout function from context
+    logout();
   };
 
   return (
