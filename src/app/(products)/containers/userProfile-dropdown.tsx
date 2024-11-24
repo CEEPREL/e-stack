@@ -13,7 +13,7 @@ interface UserDropdownProps {
 }
 
 const UserDropdown: React.FC<UserDropdownProps> = ({ handleLogin }) => {
-  const { currentUser, userDataObj, logout } = useAuth(); // Accessing user data from context
+  const { currentUser, userDataObj, logout } = useAuth();
 
   const handleLogout = () => {
     logout();
