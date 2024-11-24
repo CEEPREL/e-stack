@@ -21,7 +21,6 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ handleLogin }) => {
 
   return (
     <div className="relative">
-      {/* Dropdown Menu */}
       <DropdownMenu>
         <DropdownMenuTrigger>
           {currentUser ? (
