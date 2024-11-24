@@ -1,50 +1,33 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { auth } from "@/app/firebase/firebase";
-import { useRouter } from "next/navigation";
+
+import React, { useState } from "react";
 import { FirebaseError } from "firebase/app";
 import { useAuth } from "@/contexts/authContext/GlobalContext";
+import { useRouter } from "next/navigation";
 
-const SignIn = ({
-  onClose,
-  toSignUp,
-}: {
+interface SignInProps {
   onClose: () => void;
   toSignUp: () => void;
-}) => {
+}
+
+const SignIn: React.FC<SignInProps> = ({ onClose, toSignUp }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  // const [isModalOpen, setIsModalOpen] = useState(true);
-  const { isModalOpen, setIsModalOpen, signup, login } = useAuth();
 
-  const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
+  const { login, isModalOpen, setIsModalOpen } = useAuth();
   const router = useRouter();
-
-  useEffect(() => {
-    if (isModalOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isModalOpen]);
 
   const handleSignIn = async () => {
     try {
       setErrorMessage("");
-      const res = await signInWithEmailAndPassword(email, password);
+      await login(email, password);
 
-      if (res?.user) {
-        setEmail("");
-        setPassword("");
-        setIsModalOpen(false); // Close modal
-        router.push("/"); // Redirect to home page
-      }
+      // Reset inputs and close modal on successful login
+      setEmail("");
+      setPassword("");
+      setIsModalOpen(false);
+      router.push("/"); // Redirect to the home page
     } catch (e) {
       console.error(e);
       if (e instanceof FirebaseError) {
@@ -61,23 +44,31 @@ const SignIn = ({
           default:
             setErrorMessage("An unexpected error occurred. Please try again.");
         }
+      } else {
+        setErrorMessage("An error occurred. Please try again later.");
       }
     }
   };
 
-  if (!isModalOpen) return null; // Hide modal if closed
+  if (!isModalOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <button
-        onClick={onClose} // Close modal
-        className="absolute top-5 right-5 text-white bg-red-500 p-2 rounded"
-      >
-        Close
-      </button>
-      <div className="flex flex-col items-center justify-center h-auto bg-gray-800 p-10 rounded-lg shadow-xl w-96">
-        <p className="text-white">Welcome back</p>
-        <h1 className="text-white text-2xl mb-5">Sign In</h1>
+    <div
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+      aria-hidden={!isModalOpen}
+    >
+      <div className="relative bg-gray-800 p-10 rounded-lg shadow-xl w-96">
+        <button
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute top-4 right-4 text-white bg-red-500 p-2 rounded"
+        >
+          ×
+        </button>
+        <div className="text-center">
+          <p className="text-gray-400 mb-2">Welcome back</p>
+          <h1 className="text-white text-2xl mb-5">Sign In</h1>
+        </div>
 
         {errorMessage && (
           <div className="bg-red-500 text-white p-3 rounded mb-4">
@@ -90,25 +81,25 @@ const SignIn = ({
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-3 mb-4 bg-gray-700 rounded outline-none text-white placeholder-gray-100"
+          className="w-full p-3 mb-4 bg-gray-700 rounded outline-none text-white placeholder-gray-400"
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-3 mb-4 bg-gray-700 rounded outline-none text-white placeholder-gray-100"
+          className="w-full p-3 mb-4 bg-gray-700 rounded outline-none text-white placeholder-gray-400"
         />
         <button
           onClick={handleSignIn}
-          className="w-full p-3 bg-gray-700 rounded text-white hover:bg-gray-900"
+          className="w-full p-3 bg-indigo-600 rounded text-white hover:bg-indigo-800"
         >
           Sign In
         </button>
-        <button onClick={toSignUp} className=" text-white">
+        <button onClick={toSignUp} className="mt-4 text-gray-300">
           New user?{" "}
-          <span className="text-indigo-600 hover:text-indigo-800 underline">
-            Sign up Here
+          <span className="text-indigo-400 hover:text-indigo-600 underline">
+            Sign up here
           </span>
         </button>
       </div>

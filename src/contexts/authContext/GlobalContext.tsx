@@ -1,8 +1,7 @@
 "use client";
 import { auth, firebasedDB } from "@/app/firebase/firebase";
-
 import React, { useContext, useState, useEffect, ReactNode } from "react";
-
+import { updateProfile } from "firebase/auth";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -10,7 +9,7 @@ import {
   signOut,
   User as FirebaseUser,
 } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 
 // Define the shape of the user object from Firestore
@@ -24,7 +23,12 @@ type UserData = {
 interface AuthContextType {
   currentUser: FirebaseUser | null;
   userDataObj: UserData | null;
-  signup: (email: string, password: string) => Promise<void>;
+  signup: (
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string
+  ) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   setUserDataObj: React.Dispatch<React.SetStateAction<UserData | null>>;
@@ -63,12 +67,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isSignInOpen, setIsSignInOpen] = useState(false);
 
   // AUTH HANDLERS
-  async function signup(email: string, password: string): Promise<void> {
-    await createUserWithEmailAndPassword(auth, email, password);
+  async function signup(
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string
+  ): Promise<void> {
+    const res = await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(res.user, { displayName: `${firstName} ${lastName}` });
   }
 
   async function login(email: string, password: string): Promise<void> {
-    await useSignInWithEmailAndPassword(auth);
+    const res = await signInWithEmailAndPassword(auth, email, password);
   }
 
   async function logout(): Promise<void> {
