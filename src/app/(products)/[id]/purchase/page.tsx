@@ -1,5 +1,32 @@
+"use client";
 import React from "react";
+import { useAuth } from "@/contexts/authContext/GlobalContext";
+import { useEffect } from "react";
+import Link from "next/link";
 
 export default function page() {
-  return <div>page</div>;
+  const { currentUser, setIsSignInOpen } = useAuth();
+  useEffect(() => {
+    if (!currentUser) {
+      setIsSignInOpen(true);
+    }
+  }, [currentUser]);
+
+  if (!currentUser) {
+    return (
+      <div>
+        Kindly sign-in to make a purchase{" "}
+        <Link
+          // onClick={() => {
+          //   setIsModalOpen(true);
+          // }}
+          href={"/"}
+        >
+          Sign-in
+        </Link>
+      </div>
+    ); // Optional loading state
+  }
+
+  return <div>You can make a purchase</div>;
 }
