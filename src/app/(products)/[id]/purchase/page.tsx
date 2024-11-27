@@ -3,24 +3,18 @@ import React from "react";
 import { useAuth } from "@/contexts/authContext/GlobalContext";
 import { useEffect } from "react";
 import Link from "next/link";
+import db from "@/db/db";
+import { notFound } from "next/navigation";
 
-export default function page() {
+export default async function page({
+  param: { id },
+}: {
+  param: { id: string };
+}) {
   const { currentUser, setIsSignInOpen } = useAuth();
-  useEffect(() => {
-    if (!currentUser) {
-      setIsSignInOpen(true);
-    }
-  }, [currentUser]);
-
-  if (!currentUser) {
-    return (
-      <div>
-        Kindly sign-in to make a purchase{" "}
-        <Link className="text-blue-600 hover:underline" href={"/"}>
-          Sign-in
-        </Link>
-      </div>
-    ); // Optional loading state
+  const product = await db.product.findUnique({ where: { id } });
+  if (product == null) {
+    return notFound;
   }
 
   return <div>You can make a purchase</div>;
