@@ -16,7 +16,11 @@ export default function page() {
     return (
       <div>
         Kindly sign-in to make a purchase{" "}
-        <Link className="text-blue-600 hover:underline" href={"/"}>
+        <Link
+          onClick={() => {}}
+          className="text-blue-600 hover:underline"
+          href={"/"}
+        >
           Sign-in
         </Link>
       </div>

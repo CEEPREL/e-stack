@@ -7,12 +7,14 @@ import SearchDropdown from "../searchDropdown/searchDropdown";
 import { Button } from "../ui/button";
 import UserDropdown from "@/app/(products)/containers/userProfile-dropdown";
 import { useAuth } from "@/contexts/authContext/GlobalContext";
+import { useRouter } from "next/navigation";
 
 interface HeaderProps {
   handleclick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const Header = ({ handleclick }: HeaderProps) => {
+  const router = useRouter();
   const [keyword, setKeyword] = useState("");
   const [results, setResults] = useState<ProductInterface[]>([]);
   const [products, setProducts] = useState<ProductInterface[]>([]);
@@ -26,7 +28,7 @@ export const Header = ({ handleclick }: HeaderProps) => {
 
   const handleSignInOpen = () => {
     setIsSignInOpen(true);
-    console.log("click");
+    router.push("/");
   };
 
   const handleSearch = () => {

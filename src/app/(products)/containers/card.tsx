@@ -49,9 +49,11 @@ export const ProductCards = ({
           ₦ {priceInCents?.toLocaleString()}
         </p>
         <div className="pt-3 flex justify-center ">
-          <Button className="border text-black border-slate-300 dark:border-gray-600 rounded-md text-center w-28 h-9 flex items-center justify-center bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all">
-            <Link href={`/${id}/purchase`}>Buy</Link>
-          </Button>
+          <Link href={`/${id}/purchase`}>
+            <Button className="border text-black border-slate-300 dark:border-gray-600 rounded-md text-center w-28 h-9 flex items-center justify-center bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all">
+              Buy
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
