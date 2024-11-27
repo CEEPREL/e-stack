@@ -17,5 +17,5 @@ export default async function page({
     return notFound;
   }
 
-  return <div>You can make a purchase he</div>;
+  return <div>You can make a purchase </div>;
 }
