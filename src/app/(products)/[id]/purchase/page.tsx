@@ -6,33 +6,34 @@ import Link from "next/link";
 import db from "@/db/db";
 import { notFound } from "next/navigation";
 import { metadata } from "@/app/layout";
+import { Button } from "@/components/ui/button";
+import { Paystack } from "@/components/payments/paystack";
 
-export default async function page({
-  param: { id },
-}: {
-  param: { id: string };
+export default async function page({}: // param: { id },
+{
+  // param: { id: string };
 }) {
-  const publicKey = "sk_test_bf28873012c70f5a3c9636172459779bcebe38be";
-  const { currentUser, setIsSignInOpen } = useAuth();
-  const product = await db.product.findUnique({ where: { id } });
+  // const publicKey = "sk_test_bf28873012c70f5a3c9636172459779bcebe38be";
+  // const { currentUser, setIsSignInOpen } = useAuth();
+  // const product = await db.product.findUnique({ where: { id } });
 
-  const config = {
-    reference: new Date().getTime().toString(),
-    email: currentUser?.email,
-    amount: product?.priceInCents,
-    publicKey: publicKey,
-    metadata: {
-      custom_fields: [
-        {
-          display_name: "description",
-          variable_name: "description",
-          value: "Funding Wallet",
-        },
-        // To pass extra metadata, add an object with the same fields as above
-      ],
-    },
-  };
-  // const handlePaystackCloseAction = () => {
+  // const config = {
+  //   reference: new Date().getTime().toString(),
+  //   email: currentUser?.email,
+  //   amount: product?.priceInCents,
+  //   publicKey: publicKey,
+  //   metadata: {
+  //     custom_fields: [
+  //       {
+  //         display_name: "description",
+  //         variable_name: "description",
+  //         value: "Funding Wallet",
+  //       },
+  //       // To pass extra metadata, add an object with the same fields as above
+  //     ],
+  //   },
+  // };
+  // // const handlePaystackCloseAction = () => {
   //   // implementation for  whatever you want to do when the Paystack dialog closed.
   //   console.log("closed");
   // };
@@ -57,8 +58,8 @@ export default async function page({
 
   return (
     <div>
-      You can make a purchase{" "}
-      {/* <PaystackButton email="ceeprel" amount={5000000} publicKey={publicKey} />{" "} */}
+      You can make a purchase
+      <Paystack />
     </div>
   );
 }
