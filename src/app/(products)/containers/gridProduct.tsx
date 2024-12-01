@@ -23,7 +23,7 @@ export function ProductDisplay({
   return (
     <>
       <div>{title}</div>
-      <div className="flex mt-28 items-center justify-center ">
+      <div className="flex items-center justify-center ">
         <div className="grid items-center justify-between grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           <Suspense
             fallback={
