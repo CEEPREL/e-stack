@@ -10,16 +10,17 @@ import { Header } from "@/components/header/Header";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "E-Stack a Platform for shopping in style",
+  title:
+    "Pricious Agro an E-commerce Platform for shopping all farming products",
   description: "Explore a wide range of products",
   openGraph: {
-    title: "E-commerce Platform",
-    description: "Shop the best products online",
-    url: "www.e-stack.com",
+    title: "Agro E-commerce Platform",
+    description: "Shop the best Agro products online",
+    url: "www.Priciousagro.com.ng",
     siteName: "E-commerce Platform",
     images: [
       {
-        url: "https://yourdomain.com/default-image.jpg",
+        url: "https://www.Priciousagro.com.ng/logo.jpg",
         width: 800,
         height: 600,
         alt: "Default Image",

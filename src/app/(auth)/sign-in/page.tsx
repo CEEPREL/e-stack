@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { FirebaseError } from "firebase/app";
 import { useAuth } from "@/contexts/authContext/GlobalContext";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 interface SignInProps {
   onClose: () => void;
@@ -23,11 +24,10 @@ const SignIn: React.FC<SignInProps> = ({ onClose, toSignUp }) => {
       setErrorMessage("");
       await login(email, password);
 
-      // Reset inputs and close modal on successful login
       setEmail("");
       setPassword("");
       setIsModalOpen(false);
-      router.push("/"); // Redirect to the home page
+      router.push("/");
     } catch (e) {
       console.error(e);
       if (e instanceof FirebaseError) {
@@ -58,13 +58,13 @@ const SignIn: React.FC<SignInProps> = ({ onClose, toSignUp }) => {
       aria-hidden={!isModalOpen}
     >
       <div className="relative bg-gray-800 p-10 rounded-lg shadow-xl w-96">
-        <button
+        <Button
           onClick={onClose}
           aria-label="Close"
           className="absolute top-4 right-4 text-white bg-red-500 p-2 rounded"
         >
           ×
-        </button>
+        </Button>
         <div className="text-center">
           <p className="text-gray-400 mb-2">Welcome back</p>
           <h1 className="text-white text-2xl mb-5">Sign In</h1>
@@ -90,18 +90,18 @@ const SignIn: React.FC<SignInProps> = ({ onClose, toSignUp }) => {
           onChange={(e) => setPassword(e.target.value)}
           className="w-full p-3 mb-4 bg-gray-700 rounded outline-none text-white placeholder-gray-400"
         />
-        <button
+        <Button
           onClick={handleSignIn}
           className="w-full p-3 bg-indigo-600 rounded text-white hover:bg-indigo-800"
         >
           Sign In
-        </button>
-        <button onClick={toSignUp} className="mt-4 text-gray-300">
+        </Button>
+        <Button onClick={toSignUp} className="mt-4 text-gray-300">
           New user?{" "}
           <span className="text-indigo-400 hover:text-indigo-600 underline">
             Sign up here
           </span>
-        </button>
+        </Button>
       </div>
     </div>
   );

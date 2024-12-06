@@ -1,30 +1,30 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useAuth } from "@/contexts/authContext/GlobalContext";
-import { useEffect } from "react";
 import Link from "next/link";
 
-export default function page() {
+export default function Page() {
   const { currentUser, setIsSignInOpen } = useAuth();
+
   useEffect(() => {
     if (!currentUser) {
       setIsSignInOpen(true);
     }
-  }, [currentUser]);
+  }, [currentUser, setIsSignInOpen]);
 
   if (!currentUser) {
     return (
       <div>
-        Kindly sign-in to make a purchase{" "}
+        Kindly sign in to make a purchase{" "}
         <Link
-          onClick={() => {}}
+          onClick={() => setIsSignInOpen(true)}
           className="text-blue-600 hover:underline"
           href={"/"}
         >
           Sign-in
         </Link>
       </div>
-    ); // Optional loading state
+    );
   }
 
   return <div>You can make a purchase</div>;

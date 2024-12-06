@@ -50,12 +50,12 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ handleLogin }) => {
             </div>
             <div className="border-t border-gray-200" />
             <DropdownMenuItem className="px-4 py-2">
-              <Button
+              {/* <Button
                 onClick={handleLogout}
                 className="w-full bg-red-500 text-white hover:bg-red-600"
               >
                 Logout
-              </Button>
+              </Button> */}
             </DropdownMenuItem>
           </DropdownMenuContent>
         )}

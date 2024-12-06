@@ -63,7 +63,5 @@ async function ProductSuspense({
 }
 
 export function MainProductDispay() {
-  return (
-    <ProductDisplay title="New Products" productsFetcher={getNewProducts} />
-  );
+  return <ProductDisplay title="" productsFetcher={getNewProducts} />;
 }
