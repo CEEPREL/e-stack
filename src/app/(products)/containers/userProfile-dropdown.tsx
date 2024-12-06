@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/authContext/GlobalContext";
 
 interface UserDropdownProps {
-  handleLogin: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  handleLogin: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 const UserDropdown: React.FC<UserDropdownProps> = ({ handleLogin }) => {
@@ -36,7 +36,12 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ handleLogin }) => {
                 .join("")}
             </div>
           ) : (
-            <Button onClick={handleLogin}>Login</Button>
+            <div
+              onClick={handleLogin}
+              className="cursor-pointer px-2 py-1 rounded-lg bg-black text-white hover:text-gray-200 font-semibold"
+            >
+              Login
+            </div>
           )}
         </DropdownMenuTrigger>
 
@@ -50,12 +55,12 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ handleLogin }) => {
             </div>
             <div className="border-t border-gray-200" />
             <DropdownMenuItem className="px-4 py-2">
-              {/* <Button
+              <Button
                 onClick={handleLogout}
                 className="w-full bg-red-500 text-white hover:bg-red-600"
               >
                 Logout
-              </Button> */}
+              </Button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         )}

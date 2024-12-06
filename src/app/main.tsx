@@ -6,7 +6,7 @@ export default function Main() {
   return (
     <>
       <HomePage>
-        {/* <CarouselSize /> */}
+        <CarouselSize />
         <MainProductDispay />
       </HomePage>
     </>
