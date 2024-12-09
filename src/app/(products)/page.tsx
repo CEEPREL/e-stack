@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import SignIn from "../(auth)/sign-in/page";
 import { useRouter } from "next/navigation";
 import SignUp from "../(auth)/sign-up/page";
 import { useAuth } from "@/contexts/authContext/GlobalContext";
