@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ProductInterface } from "../../../types";
-import { Button } from "../ui/button";
 import { SearchIcon } from "lucide-react";
 
 interface SearchDropdownProps {
