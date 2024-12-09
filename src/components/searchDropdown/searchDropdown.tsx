@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ProductInterface } from "../../../types";
 import { Button } from "../ui/button";
+import { SearchIcon } from "lucide-react";
 
 interface SearchDropdownProps {
   products: ProductInterface[];
@@ -43,7 +44,7 @@ export default function SearchDropdown({ products }: SearchDropdownProps) {
           onChange={(e) => setSearchQuery(e.target.value)}
           className="border border-gray-300 rounded-md mx-5 p-2 w-full focus:outline-none focus:border-gray-500 hover:border-gray-400 transition"
         />
-        {/* <Button onClick={handleSearch}>Search</Button> */}
+        <SearchIcon className="absolute right-6 hover:cursor-pointer hover:text-gray-900 top-1/2 h-[28px] w-[32px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
       </div>
       {filteredProducts.length > 0 && (
         <div className="absolute z-10 mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg">

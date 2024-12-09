@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import StoreProvider from "./store-provider";
 import { cn } from "@/lib/utils";
 import { AuthProvider } from "@/contexts/authContext/GlobalContext";
 import { Header } from "@/components/header/Header";
@@ -49,10 +48,8 @@ export default function RootLayout({
         )}
       >
         <AuthProvider>
-          <StoreProvider>
-            <Header />
-            <main className="pt-32">{children}</main>
-          </StoreProvider>
+          <Header />
+          <main className="pt-32">{children}</main>
         </AuthProvider>
       </body>
     </html>

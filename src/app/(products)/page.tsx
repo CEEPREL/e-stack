@@ -4,11 +4,11 @@ import SignIn from "../(auth)/sign-in/page";
 import { useRouter } from "next/navigation";
 import SignUp from "../(auth)/sign-up/page";
 import { useAuth } from "@/contexts/authContext/GlobalContext";
+import SignInPage from "../(auth)/sign-in/page";
+import SignUpPage from "../(auth)/sign-up/page";
 
 export default function HomePage({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  // const [isSignInOpen, setIsSignInOpen] = useState(false);
-  // const [isSignedUp, setIsSignedUp] = useState(true);
   const {
     currentUser,
     userDataObj,
@@ -42,12 +42,8 @@ export default function HomePage({ children }: { children: React.ReactNode }) {
   return (
     <>
       {isSignedUp
-        ? isSignInOpen && (
-            <SignIn onClose={handleSignInClose} toSignUp={handleAuthMode} />
-          )
-        : isSignInOpen && (
-            <SignUp onClose={handleSignInClose} toSignIn={handleAuthMode} />
-          )}
+        ? isSignInOpen && <SignInPage />
+        : isSignInOpen && <SignUpPage />}
       {children}
     </>
   );

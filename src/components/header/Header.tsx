@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import { loadProducts } from "@/utils/localStorage";
 import Link from "next/link";
 import { ProductInterface } from "../../../types";
 import SearchDropdown from "../searchDropdown/searchDropdown";
@@ -15,32 +14,14 @@ interface HeaderProps {
 
 export const Header = ({ handleclick }: HeaderProps) => {
   const router = useRouter();
-  const [keyword, setKeyword] = useState("");
   const [results, setResults] = useState<ProductInterface[]>([]);
   const [products, setProducts] = useState<ProductInterface[]>([]);
   const { currentUser, userDataObj, setIsSignInOpen, setIsSignedUp } =
     useAuth();
 
-  useEffect(() => {
-    const products = loadProducts();
-    setProducts(products);
-  }, []);
-
   const handleSignInOpen = () => {
     setIsSignInOpen(true);
     router.push("/");
-  };
-
-  const handleSearch = () => {
-    const products = loadProducts();
-    const lowerKeyword = keyword.toLowerCase();
-    const filteredResults = products.filter(
-      (product) =>
-        product.name?.toLowerCase().includes(lowerKeyword) ||
-        product.description?.toLowerCase().includes(lowerKeyword) ||
-        product.category?.toLowerCase().includes(lowerKeyword)
-    );
-    setResults(filteredResults);
   };
 
   return (
